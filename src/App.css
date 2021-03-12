@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+}
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #282c34;
+  color: white;
+  font-family: 'Lato', sans-serif;
+}
+
+
+
+
+.screen{
+  margin-top: 40px;
+}
+.screen input {
+  padding: 10px 10px;
+  width: 50vw;
+  font-size: 24px;
+}
+
+
+.btn-container{
+  margin-top: 10px;
+}
+button{
+  padding: 10px 20px;
+  margin: 5px;
+  font-weight: bold;
+  border: 3px solid transparent;
+  outline: none;
+  border-radius: 2em;
+  transition: all 0.2s;
+  color: #fff;
+}
+
+button:nth-child(1) {
+  background-color: #9a4ef1;
+}
+button:nth-child(2) {
+  background-color: #f14e4e;
+}
+button:nth-child(3) {
+  background-color: #6ada32;
+}
+button:nth-child(4) {
+  background-color: #f8b530;
+}
+
+button:hover{
+  border-color: #ffff;
+  cursor: pointer;
+}
+ul, li{
+  list-style-type: none;
+}
+h3{
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
