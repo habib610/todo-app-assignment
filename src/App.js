@@ -8,9 +8,10 @@ function App() {
   const initialState = {
     present : [], 
     past: [],
-    future: []
+    future: [],
+    removeState: false
   }
-  const reducer = (state = {present: [], past:[], future: []}, action) => {
+  const reducer = (state = {present: [], past:[], future: [], removeState: false}, action) => {
     switch(action.type) {
       case INCREMENT:
         if(action.payload === '') {
@@ -36,12 +37,23 @@ function App() {
           ...state,
           past: [...state.present],
           present: [...state.present.filter(num => num !== item)],
-          future: [...state.future, item]
+          future: [...state.future, item],
+          removeState: true
         }
       
 
 
       case UNDO:
+        if(state.removeState) {
+          const secondFutureItem = state.future[state.future.length - 1] 
+          return {
+            ...state,
+            past: [...state.present],
+            present: [...state.present, secondFutureItem].sort(),
+            future: [...state.future.filter(num => num !== secondFutureItem)],
+            removeState: true
+          }
+        }
         // history past and future empty
         const lastPresentItem = state.present[state.present.length - 1] 
         return {
@@ -52,6 +64,13 @@ function App() {
         }
       
       case REDO:
+        if(state.removeState) {
+          // const itemFromPast = 
+          return {
+            ...state,
+            present: [...state.past]
+          }
+        }
         const lastFutureItem = state.future[state.future.length - 1]
         return {
           ...state,
