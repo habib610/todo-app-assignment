@@ -13,9 +13,8 @@ function App() {
   const reducer = (state = {present: [], past:[], future: []}, action) => {
     switch(action.type) {
       case INCREMENT:
-        inputValue.current.value = ''
-        if(inputValue.current.value === '') {
-          alert("Input Field Can't be Empty") 
+        if(action.payload === '') {
+          alert("Field Can't be Empty") 
           return state
         }
         const existingItem = state.present.find(num=> num === action.payload)
@@ -25,22 +24,41 @@ function App() {
         } 
         else{
           return {
-            ...state, present: [...state.present, action.payload]
+            ...state, present: [...state.present, action.payload].sort()
           }
         }
         
 
       case REMOVE:
+        const item = action.payload
         inputValue.current.value = ''
-          return state
+        return{
+          ...state,
+          past: [...state.present],
+          present: [...state.present.filter(num => num !== item)],
+          future: [...state.future, item]
+        }
+      
 
 
       case UNDO:
-        return state
+        // history past and future empty
+        const lastPresentItem = state.present[state.present.length - 1] 
+        return {
+          ...state,
+          past: [...state.present],
+          present: [...state.present.filter(num => num !== lastPresentItem )],
+          future: [...state.future , lastPresentItem]
+        }
       
-       
       case REDO:
-        return state
+        const lastFutureItem = state.future[state.future.length - 1]
+        return {
+          ...state,
+          past: [...state.present],
+          present: [...state.present, lastFutureItem],
+          future: [...state.future.filter(item => item !== lastFutureItem)]
+        }
       default:
         return state
     }
@@ -51,20 +69,25 @@ function App() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch({type: INCREMENT, payload: inputValue.current.value})
+    if(inputValue.current.value === '') {
+      alert("Field Can't be Empty")
+      return
+    }
+    dispatch({type: INCREMENT, payload: Number(inputValue.current.value)})
     inputValue.current.value = ''
   };
 
   const handleRemove = () => {
-    if (inputValue.current.value === '') {
-      alert("Enter a Value")
-      return
-    }
-    dispatch({type: REMOVE, payload: inputValue.current.value})
+    // if (inputValue.current.value === '') {
+    //   alert("Enter a Value")
+    //   return 
+    // }
+    dispatch({type: REMOVE, payload: Number(inputValue.current.value)})
               
   }
 
 const handleUndo = () => {
+  
   dispatch({type: UNDO})
 }
 const handleRedo = () => {
@@ -90,7 +113,7 @@ console.log(state)
 
           <button onClick={handleUndo} >UNDO</button>
           
-          <button disabled onClick={handleRedo }>REDO</button>
+          <button  onClick={handleRedo }>REDO</button>
         </div>
 
 
